@@ -22,50 +22,76 @@ chrome.contextMenus.create({
         var selection = info.selectionText;
 
         if(undefined != selection) {
-            
-            
-    var webContent = [];
-    chrome.tabs.executeScript( null, {
-        code: 'document.body.innerHTML;'
-    }, 
-    function(results){
-            webContent = results[0];
-           accessArray();
-            
-        }
-    );
-    function accessArray(callback){
-    
-    
-    function Site(siteContent) { 
-        var that= {}; 
-        that.siteContent= siteContent; return that; 
-    }
-    var site = Site(); 
-    site.siteContent = webContent; 
+             
+             function Site(siteContent) { 
+                                           var that= {}; 
+                                           that.siteContent= siteContent; return that; 
+                                       };
+                                       var site = Site(); 
+                                       site.siteContent = selection; 
+           
+               
+                $http({
+                   url: 'http://cyberwatch.eu-gb.mybluemix.net/webresources/generic/addUserWords', 
+                   dataType: 'json',
+                   method: 'POST',  
+                   data: site,
+                   headers: {'Content-Type': 'application/json'}
+                })
+                  .success (function(data){       
+                     // alert(site.siteContent);
+                              
+                                        var webContent = [];
+                                       chrome.tabs.executeScript( null, {
+                                           code: 'document.body.innerHTML;'
+                                       }, 
+                                       function(results){
+                                               webContent = results[0];
+                                              accessArray();
+                                           }
+                                       );
+                                       function accessArray(callback){
 
-        callback = callback||function(){};
-        $http({
-           url: 'http://cyberwatch.eu-gb.mybluemix.net/webresources/generic/analyzeSite', 
-           dataType: 'json',
-           method: 'POST',  
-           data: site,
-           headers: {'Content-Type': 'application/json'}
-        })
-          .success (function(data){       
-            var pageContent = JSON.stringify(data.siteContent);
+                                       function Site(siteContent) { 
+                                           var that= {}; 
+                                           that.siteContent= siteContent; return that; 
+                                       };
+                                       var site = Site(); 
+                                       site.siteContent = webContent; 
+
+                                           callback = callback||function(){};
+                                           $http({
+                                              url: 'http://cyberwatch.eu-gb.mybluemix.net/webresources/generic/analyzeSite', 
+                                              dataType: 'json',
+                                              method: 'POST',  
+                                              data: site,
+                                              headers: {'Content-Type': 'application/json'}
+                                           })
+                                             .success (function(data){       
+                                               var pageContent = JSON.stringify(data.siteContent);
+
+                                               chrome.tabs.executeScript( null, {
+                                                   code: 'document.body.innerHTML = ' + pageContent + ';'
+
+                                               })
+                                             })
+                                             .error (function(errMsg){
+                                                     alert(errMsg);
+                                             });
+                                         };
+
+                      
+                    
+                  })
+                  .error (function(errMsg){
+                          alert(errMsg);
+                  });
             
-            chrome.tabs.executeScript( null, {
-                code: 'document.body.innerHTML = ' + pageContent + ';'
-
-            })
-          })
-          .error (function(errMsg){
-                  alert(errMsg);
-          });
-      }; 
-
-            alert(selection);
+            
+           
+                
+           
+            //alert(selection);
 
         }
         else {
