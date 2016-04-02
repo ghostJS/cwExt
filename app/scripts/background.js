@@ -15,6 +15,12 @@ chrome.contextMenus.create({
       }
   });
 
-chrome.contextMenus.onClicked.addListener(function(tab) {
-      alert('Hello world');
+chrome.contextMenus.onClicked.addListener(function(info, tab) {
+      var selection = info.selectionText;
+    if(undefined != selection) {  
+    alert(selection);
+    }
+    else {
+        alert('You need to select cyberbulling word or phrase');
+    }
 });
