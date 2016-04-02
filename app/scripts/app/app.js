@@ -1,7 +1,9 @@
-"use strict";
+//"use strict";
 
 services
-angular.module('popup', [
+angular.module('popup', 'backgroundModule', [
   'popup.services',
-  'popup.controllers'
+  'popup.controllers',
+  'backgroundModule.services',
+  'backgroundModule.controllers'
 ]);

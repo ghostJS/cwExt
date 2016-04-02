@@ -20,9 +20,6 @@ angular.module('popup', [])
     }
     var site = Site(); 
     site.siteContent = webContent; 
-//   
-          
-//      var _postContent = function  {
 
         callback = callback||function(){};
         $http({
